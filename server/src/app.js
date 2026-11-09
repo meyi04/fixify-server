@@ -24,6 +24,9 @@ export function createApp(corsOrigins = process.env.CORS_ORIGINS || '') {
   app.use('/api/auth', authRoutes);
   app.use('/api/admin', admin);
   app.use('/api', core);
+  app.use("/health", (req, res) => {
+    res.send("ok");
+  })
   app.use((req, res) => res.status(404).json({ error: 'Not found' }));
   app.use((err, req, res, next) => {
     if (err.name === 'ZodError') return res.status(400).json({ error: err.issues.map((i) => i.message).join('; ') });
